@@ -22,6 +22,7 @@ class ProjectTasksDialog(QDialog):
         self.project_labels_list = ["ProjectID", "Decription", "Deadline", "Created", "Completed"]
         self.project_details = self.get_project_details()
 
+        #创建一个网格布局 QGridLayout，用于显示项目的详细信息
         self.project_details_layout = QGridLayout()
         col = 0
         for label in self.project_labels_list:
@@ -50,16 +51,18 @@ class ProjectTasksDialog(QDialog):
         self.project_tasks_button_layout.addWidget(self.edit_task_button)
         self.project_tasks_button_layout.addWidget(self.delete_task_button)
         self.project_tasks_button_layout.addWidget(self.close_window_button)
-
+        #创建一个垂直布局 QVBoxLayout，
+        # 将项目标签、项目详细信息布局、任务标签、任务表格和按钮布局添加到该布局中
         self.project_tasks_layout = QVBoxLayout()
         self.project_tasks_layout.addWidget(self.project_label)
         self.project_tasks_layout.addLayout(self.project_details_layout)
         self.project_tasks_layout.addWidget(self.tasks_label)
         self.project_tasks_layout.addWidget(self.project_tasks_table)
         self.project_tasks_layout.addLayout(self.project_tasks_button_layout)
-
+        #将主布局设置为对话框的布局，使得所有组件能够在对话框中正确显示
         self.setLayout(self.project_tasks_layout)
 
+        #将任务表格的点击事件连接到 enable_buttons 方法，以便在用户选择任务时启用相应的按钮
         self.project_tasks_table.clicked.connect(self.enable_buttons)
 
         self.add_task_button.clicked.connect(self.open_new_project_task_dialog)
@@ -68,6 +71,8 @@ class ProjectTasksDialog(QDialog):
         self.delete_task_button.clicked.connect(self.open_delete_task_dialog)
         self.close_window_button.clicked.connect(self.close)
 
+    #get_project_details 方法从数据库中获取与当前项目 ID 相关的项目详细信息
+    #类的方法，self 参数指代类的实例。该方法没有参数，主要用于获取与项目相关的详细信息
     def get_project_details(self):
         project_details = []
         controller_results = self.controller.get_single_project(self.project_id)
@@ -79,6 +84,9 @@ class ProjectTasksDialog(QDialog):
             if item == None:
                 item = ""
                 project_details.append(item)
+                #去除Timestamp 的结构下最后的7位
+                #ISO 8601 标准，例如 YYYY-MM-DD HH:MM:SS.SSSSSS。
+                # 在这个格式中，最后七位通常表示微秒部分
             else:
                 project_details.append(str(item[:-7]))
         return project_details

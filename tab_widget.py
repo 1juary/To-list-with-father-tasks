@@ -70,14 +70,14 @@ class TaskProjectTabs(QWidget):
         self.project_delete_button = QPushButton("Delete")
         self.project_delete_button.setEnabled(False)
         self.project_exit_button = QPushButton("Exit")
-
+        # 设置Tasks Tables 横向的按钮布局
         self.tasks_tab_button_layout = QHBoxLayout()
         self.tasks_tab_button_layout.addWidget(self.new_task_button)
         self.tasks_tab_button_layout.addWidget(self.task_complete_button)
         self.tasks_tab_button_layout.addWidget(self.task_edit_button)
         self.tasks_tab_button_layout.addWidget(self.task_delete_button)
         self.tasks_tab_button_layout.addWidget(self.task_exit_button)
-
+        # 设置Projects Tables 横向的按钮布局
         self.projects_tab_button_layout = QHBoxLayout()
         self.projects_tab_button_layout.addWidget(self.new_project_button)
         self.projects_tab_button_layout.addWidget(self.project_tasks_button)
@@ -85,23 +85,24 @@ class TaskProjectTabs(QWidget):
         self.projects_tab_button_layout.addWidget(self.project_edit_button)
         self.projects_tab_button_layout.addWidget(self.project_delete_button)
         self.projects_tab_button_layout.addWidget(self.project_exit_button)
-
+        #设置Tasks 页面的纵向布局，从上往下放置单选/下拉/表格/按钮
         self.tasks_tab_layout = QVBoxLayout()
         self.tasks_tab_layout.addLayout(self.tasks_top_layout)
         self.tasks_tab_layout.addWidget(self.tasks_table)
         self.tasks_tab_layout.addLayout(self.tasks_tab_button_layout)
         self.tasks_tab.setLayout(self.tasks_tab_layout)
-
+        # 设置Projects 页面的纵向布局，从上往下放置单选/下拉/表格/按钮
         self.projects_tab_layout = QVBoxLayout()
         self.projects_tab_layout.addLayout(self.projects_top_layout)
         self.projects_tab_layout.addWidget(self.projects_table)
         self.projects_tab_layout.addLayout(self.projects_tab_button_layout)
         self.projects_tab.setLayout(self.projects_tab_layout)
-
+        #将任务和项目的布局设置为各自标签页的布局，并将整个标签控件的布局设置为主布局。
         self.tab_widget_layout = QVBoxLayout()
         self.tab_widget_layout.addWidget(self.tabs)
         self.setLayout(self.tab_widget_layout)
-
+        #将各种用户交互（如标签页切换、按钮点击等）连接到相应的槽函数，
+        # 以便在用户操作时执行特定的功能。
         self.tabs.currentChanged.connect(self.refresh_tab)
 
         self.tasks_radio_buttons.radio_button_group.buttonClicked.connect(self.populate_tasks_table)
@@ -126,7 +127,9 @@ class TaskProjectTabs(QWidget):
 
         self.task_delete_button.clicked.connect(self.open_delete_task_dialog)
         self.project_delete_button.clicked.connect(self.open_delete_project_dialog)
-
+    #具体的数据填充和操作方法
+    #TasksProjectTabs 类的实例方法
+    #self 参数指向当前类的实例，允许方法访问类的属性和其他方法
     def populate_tasks_table(self):
         table_type = self.tasks_radio_buttons.selected_button()
         table_items = self.tasks_table.get_tasks(table_type)
@@ -150,7 +153,7 @@ class TaskProjectTabs(QWidget):
     def sort_projects_table(self):
         sort_by = self.projects_sort_combobox.currentIndex()
         self.projects_table.sortByColumn(sort_by, Qt.AscendingOrder)
-
+    #点击表格中的内容时候,启用相关的按钮的方法
     def enable_task_buttons(self):
         if not self.tasks_table.check_completed():
             self.task_complete_button.setEnabled(True)
@@ -167,7 +170,7 @@ class TaskProjectTabs(QWidget):
             self.project_complete_button.setEnabled(False)
         self.project_edit_button.setEnabled(True)
         self.project_delete_button.setEnabled(True)
-
+    #打开添加新任务的对话框，并在对话框关闭后刷新任务表格
     def open_new_task_dialog(self):
         new_task_dialog = NewTaskDialog()
         new_task_dialog.exec_()
@@ -189,7 +192,7 @@ class TaskProjectTabs(QWidget):
         edit_project_dialog = EditProjectDialog(project_id)
         edit_project_dialog.exec_()
         self.populate_projects_table()
-
+    #标记完成的方法
     def mark_task_completed(self):
         task_id = self.tasks_table.get_id()
         self.controller.mark_task_completed(task_id)
