@@ -6,6 +6,37 @@ from PyQt5.QtWidgets import *
 
 from create_new_db import *
 from tab_widget import *
+import sqlite3
+verbindung = sqlite3.connect("to_do.db")
+zeiger = verbindung.cursor()
+
+sql_anweisung = """
+CREATE TABLE IF NOT EXISTS Tasks (
+TaskID integer,
+Description text,
+Deadline date,
+Created timestamp,
+Completed timestamp,
+ProjectID integer,
+PRIMARY KEY(TaskID),
+FOREIGN KEY(ProjectID) REFERENCES Projects(ProjectID)
+);"""
+
+zeiger.execute(sql_anweisung)
+
+sql_anweisung = """
+CREATE TABLE IF NOT EXISTS Projects (
+ProjectID integer,
+Description text,
+Deadline date,
+Created timestamp,
+Completed timestamp,
+PRIMARY KEY(ProjectID)
+);"""
+
+zeiger.execute(sql_anweisung)
+verbindung.close()
+
 
 class ToDoWindow(QMainWindow):
     

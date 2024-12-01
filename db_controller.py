@@ -13,12 +13,12 @@ class DbController:
             cursor.execute(sql, data)
             db.commit()
 
-    def select_query(self,sql,data=None):
+    def select_query(self, sql, data=None):
         with sqlite3.connect(self.db_name) as db:
             cursor = db.cursor()
             cursor.execute("PRAGMA foreign_keys = ON")
             if data:
-                cursor.execute(sql,data)
+                cursor.execute(sql, data)
             else:
                 cursor.execute(sql)
             results = cursor.fetchall()
