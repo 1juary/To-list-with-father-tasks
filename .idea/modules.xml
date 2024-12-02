@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/To-Do-List.iml" filepath="$PROJECT_DIR$/.idea/To-Do-List.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/To-do-list-with-father-tasks.iml" filepath="$PROJECT_DIR$/.idea/To-do-list-with-father-tasks.iml" />
     </modules>
   </component>
 </project>
